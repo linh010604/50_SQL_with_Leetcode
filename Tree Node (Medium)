@@ -1,0 +1,12 @@
+ select 
+    id ,   
+    case
+        when p_id is null then 'Root'
+        when id in (
+            select a.id
+            from tree a , tree b
+            where a.id = b.p_id
+            group by a.id) then 'Inner'
+        else 'Leaf' 
+    end as type
+from Tree 
