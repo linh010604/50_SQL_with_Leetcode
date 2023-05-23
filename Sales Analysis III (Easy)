@@ -1,0 +1,11 @@
+select p.product_id , p.product_name
+from Product p 
+right join Sales S
+on S.product_id = P.product_id
+where not p.product_id in (
+    select product_id
+    from sales
+    where sale_date < date("2019-01-01")
+    or sale_date > date("2019-03-31")
+)
+group by p.product_id
