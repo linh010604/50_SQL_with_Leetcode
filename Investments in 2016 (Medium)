@@ -1,0 +1,11 @@
+with cte as(
+    select pid , count(pid) over (partition by r.lat, r.lon) as a
+    from Insurance r 
+), cte1 as(
+    select pid, count(pid) over (partition by tiv_2015) as a
+    from Insurance r 
+)
+select round(sum(tiv_2016),2) as tiv_2016
+from Insurance
+where pid in ( select pid from cte where a = 1) 
+and pid in ( select pid from cte1 where a > 1)
